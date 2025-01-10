@@ -1,5 +1,6 @@
 package cafeboard.board;
 
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public class BoardController {
     }
 
     @PostMapping("/boards")
-    public BoardResponse createBoard(@RequestBody BoardRequest boardRequest) {
+    public BoardResponse createBoard(@Valid @RequestBody BoardRequest boardRequest) {
         return boardService.save(boardRequest);
     }
 
@@ -24,7 +25,7 @@ public class BoardController {
     }
 
     @PutMapping("/boards/{boardId}")
-    public BoardResponse putBoard(@PathVariable Long boardId, @RequestBody BoardRequest boardRequest){
+    public BoardResponse putBoard(@PathVariable Long boardId, @Valid @RequestBody BoardRequest boardRequest){
         return boardService.update(boardId, boardRequest);
     }
 
