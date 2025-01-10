@@ -19,7 +19,7 @@
         - /boards
     - Example Endpoint
         - https://localhost:8080/boards
-    - Response
+    - Response : List<BoardResponse>
         - boardId `Number` 게시판 ID
         - boardName `String` 게시판 이름
 
@@ -72,12 +72,8 @@
         - /posts
     - Example Endpoint
         - https://localhost:8080/posts?boardId=3
-    - Request
-      - RequestParam
-      - boardId `Long` 게시판 ID
-      - postTitle `String` 게시글 제목
-      - commentCount `int` 댓글 개수
-    - Response
+    - Request : 전체 조회니까 x
+    - Response : List<BoardResponse>
       - postId `Long` 게시글 ID
       - title `String` 게시글 제목
       - boardId `Long` 게시판 ID
@@ -85,23 +81,18 @@
 - 특정 게시글 조회
   - `GET`
   - Path
-  - /posts/{postId}
+    - /posts/{postId}
   - Example Endpoint
-  - https://localhost:8080/posts/{postId}
+    - https://localhost:8080/posts/{postId}
   - Request
-  - Path
-  - postId `Long` 게시글 ID
-  - RequestBody
-  - title `String` 게시판 제목
-  - content `String` 게시판 내용
-  - comments `List<comment>` 댓글 내용
-  - postId `Long` 게시글 ID
-  - Response
-  - postId `Long` 게시글 ID
-  - title `String` 게시판 제목
-  - content `String` 게시판 내용
-  - comments `List<comment>` 댓글 조회
-  - postId `Long` 게시글 ID
+    - Path
+      - postId `Long` 게시글 ID
+    - Response
+      - postId `Long` 게시글 ID
+      - title `String` 게시판 제목
+      - content `String` 게시판 내용
+      - comments `List<comment>` 댓글 조회
+      - postId `Long` 게시글 ID
 
 - 수정
     - `PUT`
