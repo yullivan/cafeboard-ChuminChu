@@ -27,4 +27,10 @@ public class BoardController {
     public BoardResponse putBoard(@PathVariable Long boardId, @RequestBody BoardRequest boardRequest){
         return boardService.update(boardId, boardRequest);
     }
+
+    @DeleteMapping("/boards/{boardId}")
+    public void deleteBoard(@PathVariable Long boardId){
+        boardService.delete(boardId);
+    }
+
 }
