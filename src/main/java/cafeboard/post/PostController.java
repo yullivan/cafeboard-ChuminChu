@@ -1,5 +1,6 @@
 package cafeboard.post;
 
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public class PostController {
     }
 
     @PostMapping("/posts")
-    public PostResponse createPost(@RequestBody PostRequest postRequest){
+    public PostResponse createPost(@Valid @RequestBody PostRequest postRequest){
         return postService.save(postRequest);
     }
 
@@ -29,7 +30,7 @@ public class PostController {
     }
 
     @PutMapping("/posts/{postId}")
-    public PostResponse putPost(@PathVariable Long postId, @RequestBody PostRequest postRequest){
+    public PostResponse putPost(@PathVariable Long postId, @Valid @RequestBody PostRequest postRequest){
         return postService.updatePost(postId,postRequest);
     }
 

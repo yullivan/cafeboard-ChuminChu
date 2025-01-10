@@ -10,10 +10,13 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String content;
+    @Column(nullable = false)
     private String title;
 
     @ManyToOne
+    @JoinColumn(nullable = false)
     private Board board;
     public Post() {
     }
