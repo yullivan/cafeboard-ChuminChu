@@ -18,11 +18,18 @@ public class Board {
         this.boardName = boardName;
     }
 
+    public Board() {
+    }
+
     public Long getId() {
         return id;
     }
 
     public String getBoardName() {
         return boardName;
+    }
+
+    public void setBoardName(String boardName) {
+        this.boardName = boardName;
     }
 }
