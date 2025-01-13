@@ -15,15 +15,16 @@ public class Post {
     @Column(nullable = false)
     private String title;
 
+
     @ManyToOne
     @JoinColumn(nullable = false)
     private Board board;
     public Post() {
     }
 
-    public Post(String content, String title, Board board) {
-        this.content = content;
+    public Post(String title, String content, Board board) {
         this.title = title;
+        this.content = content;
         this.board = board;
     }
 
