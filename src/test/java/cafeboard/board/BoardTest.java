@@ -73,12 +73,26 @@ public class BoardTest extends AcceptanceTest {
 
     @Test
     void 게시판조회테스트() {
+        BoardResponse 자유게시판 = RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .body(new BoardRequest("자유게시판"))
+                .when()
+                .post("/boards")
+                .then().log().all()
+                .statusCode(200)
+                .extract()
+                .as(BoardResponse.class);
+
         RestAssured
                 .given().log().all()
                 .when()
                 .get("/boards")
                 .then().log().all()
-                .statusCode(200);
+                .statusCode(200)
+                .extract()
+                .jsonPath()
+                .getList(".", BoardResponse.class);
     }
 
     @Test
