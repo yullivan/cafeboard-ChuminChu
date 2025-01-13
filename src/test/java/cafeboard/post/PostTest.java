@@ -54,6 +54,7 @@ public class PostTest extends AcceptanceTest {
         assertThat(게시글.content()).isNotNull();
         assertThat(게시글.title()).isNotNull();
     }
+
     @Test
     void 게시글전체조회테스트() {
         BoardResponse 자유게시판 = RestAssured
@@ -251,4 +252,63 @@ public class PostTest extends AcceptanceTest {
         assertThat(댓글개수포함조회.get(0).viewCount()).isEqualTo(2);
     }
 
+    @Test
+    void 게시글_댓글내용_포함_조회() {
+        BoardResponse 자유게시판 = RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .body(new BoardRequest("게시판1"))
+                .when()
+                .post("/boards")
+                .then().log().all()
+                .statusCode(200)
+                .extract()
+                .as(BoardResponse.class);
+
+        PostResponse 게시글 = RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .body(new PostRequest("안녕하세요", "인사", 자유게시판.id()))
+                .when()
+                .post("/posts")
+                .then().log().all()
+                .statusCode(200)
+                .extract()
+                .as(PostResponse.class);
+
+        CommentResponse 댓글1 = RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .body(new CommentRequest("댓글내용", "이름", 게시글.id()))
+                .when()
+                .post("/comments")
+                .then().log().all()
+                .statusCode(200)
+                .extract()
+                .as(CommentResponse.class);
+
+        CommentResponse 댓글2 = RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .body(new CommentRequest("댓글내용", "이름", 게시글.id()))
+                .when()
+                .post("/comments")
+                .then().log().all()
+                .statusCode(200)
+                .extract()
+                .as(CommentResponse.class);
+
+        PostCommentDetailResponse 게시글상세조회 = RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .pathParam("postId", 게시글.id())
+                .when()
+                .get("/posts/{postId}")
+                .then().log().all()
+                .statusCode(200)
+                .extract()
+                .as(PostCommentDetailResponse.class);
+
+        assertThat(게시글상세조회.comments()).isNotNull();
+    }
 }
