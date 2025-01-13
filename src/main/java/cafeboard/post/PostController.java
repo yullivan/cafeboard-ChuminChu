@@ -20,7 +20,7 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public List<PostResponse> getPosts(@RequestParam(required = false) Long boardId){
+    public List<PostCommentResponse> getPosts(@RequestParam(required = false) Long boardId){
         return postService.findByBoardId(boardId);
     }
 

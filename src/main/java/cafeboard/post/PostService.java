@@ -48,13 +48,14 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    public List<PostResponse> findByBoardId(Long boardId) {
-       return postRepository.findByBoardId(boardId)
+    public List<PostCommentResponse> findByBoardId(Long boardId) {
+        return postRepository.findByBoardId(boardId)
                .stream()
-               .map( post-> new PostResponse(
+               .map( post-> new PostCommentResponse(
                         post.getId(),
                         post.getTitle(),
-                        post.getContent()
+                        post.getContent(),
+                        post.getComments().size()
                         )).toList();
     }
 }

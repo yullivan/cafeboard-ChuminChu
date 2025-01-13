@@ -1,7 +1,11 @@
 package cafeboard.post;
 
 import cafeboard.board.Board;
+import cafeboard.comment.Comment;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Post {
@@ -16,9 +20,16 @@ public class Post {
     private String title;
 
 
+
     @ManyToOne
     @JoinColumn(nullable = false)
     private Board board;
+
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments;
+
+    private int viewCount;
+
     public Post() {
     }
 
@@ -42,6 +53,14 @@ public class Post {
 
     public Board getBoard() {
         return board;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public int getViewCount() {
+        return viewCount;
     }
 
     public void setContent(String content) {
