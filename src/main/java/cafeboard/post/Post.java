@@ -26,7 +26,7 @@ public class Post {
     private Board board;
 
     @OneToMany(mappedBy = "post")
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     private int viewCount;
 

@@ -5,4 +5,7 @@ public record CommentResponse(
         String name,
         Long id
 ) {
+    public CommentResponse(Comment comment) {
+        this(comment.getContent(), comment.getName(), comment.getId());
+    }
 }

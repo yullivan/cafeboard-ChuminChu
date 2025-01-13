@@ -2,6 +2,7 @@ package cafeboard.post;
 
 import cafeboard.board.Board;
 import cafeboard.board.BoardRepository;
+import cafeboard.comment.CommentResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +28,18 @@ public class PostService {
         return new PostResponse(post.getId(), post.getTitle(), post.getContent());
     }
 
-    public PostResponse findById(Long postId) {
+    public PostCommentDetailResponse findById(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(()->
                 new NoSuchElementException("찾는 글이 없습니다." + postId));
-        return new PostResponse(postId, post.getTitle(), post.getContent());
+
+        return new PostCommentDetailResponse(
+                postId,
+                post.getTitle(),
+                post.getContent(),
+                post.getComments()
+                        .stream()
+                        .map(comment -> new CommentResponse(comment))
+                        .toList());
     }
 
     @Transactional

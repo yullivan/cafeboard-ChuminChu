@@ -25,7 +25,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}")
-    public PostResponse getPost(@PathVariable Long postId){
+    public PostCommentDetailResponse getPost(@PathVariable Long postId){
         return postService.findById(postId);
     }
 
