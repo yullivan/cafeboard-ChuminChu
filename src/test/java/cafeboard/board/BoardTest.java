@@ -1,7 +1,6 @@
-package cafeboard;
+package cafeboard.board;
 
-import cafeboard.board.BoardRequest;
-import cafeboard.board.BoardResponse;
+import cafeboard.AcceptanceTest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +11,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class BoardTest {
+public class BoardTest extends AcceptanceTest {
 
     @LocalServerPort
     int port;
@@ -98,7 +97,7 @@ public class BoardTest {
         RestAssured
                 .given().log().all()
                 .contentType(ContentType.JSON)
-                .body(new BoardRequest("익명게시판"))
+                .body(new BoardRequest("자유게시판"))
                 .pathParam("boardId", 게시판.id())
                 .when()
                 .put("/boards/{boardId}")
@@ -111,7 +110,7 @@ public class BoardTest {
         BoardResponse 공지사항 = RestAssured
                 .given().log().all()
                 .contentType(ContentType.JSON)
-                .body(new BoardRequest("공지사항"))
+                .body(new BoardRequest("자유게시판"))
                 .when()
                 .post("/boards")
                 .then().log().all()

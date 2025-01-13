@@ -1,9 +1,8 @@
-package cafeboard;
+package cafeboard.post;
 
+import cafeboard.AcceptanceTest;
 import cafeboard.board.BoardRequest;
 import cafeboard.board.BoardResponse;
-import cafeboard.post.PostRequest;
-import cafeboard.post.PostResponse;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +13,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PostTest {
+public class PostTest extends AcceptanceTest {
 
     @LocalServerPort
     int port;
@@ -56,7 +55,7 @@ public class PostTest {
         BoardResponse 자유게시판 = RestAssured
                 .given().log().all()
                 .contentType(ContentType.JSON)
-                .body(new BoardRequest("게시판2"))
+                .body(new BoardRequest("게시판1"))
                 .when()
                 .post("/boards")
                 .then().log().all()
@@ -91,7 +90,7 @@ public class PostTest {
         BoardResponse 자유게시판 = RestAssured
                 .given().log().all()
                 .contentType(ContentType.JSON)
-                .body(new BoardRequest("게시판3"))
+                .body(new BoardRequest("게시판1"))
                 .when()
                 .post("/boards")
                 .then().log().all()
@@ -123,7 +122,7 @@ public class PostTest {
         BoardResponse 자유게시판 = RestAssured
                 .given().log().all()
                 .contentType(ContentType.JSON)
-                .body(new BoardRequest("게시판4"))
+                .body(new BoardRequest("게시판1"))
                 .when()
                 .post("/boards")
                 .then().log().all()
@@ -146,7 +145,7 @@ public class PostTest {
                 .given().log().all()
                 .contentType(ContentType.JSON)
                 .body(new PostRequest("아효 힘들어", "제목이다", postResponse.id()))
-                .pathParam("postId", "2")
+                .pathParam("postId", postResponse.id())
                 .when()
                 .put("/posts/{postId}")
                 .then().log().all()
@@ -159,7 +158,7 @@ public class PostTest {
         BoardResponse 자유게시판 = RestAssured
                 .given().log().all()
                 .contentType(ContentType.JSON)
-                .body(new BoardRequest("게시판5"))
+                .body(new BoardRequest("게시판1"))
                 .when()
                 .post("/boards")
                 .then().log().all()
