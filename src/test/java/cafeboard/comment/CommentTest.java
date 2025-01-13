@@ -172,5 +172,77 @@ public class CommentTest extends AcceptanceTest {
 
     }
 
+    @Test
+    void 댓글_예외처리() {
+        BoardResponse 자유게시판 = RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .body(new BoardRequest("자유게시판"))
+                .when()
+                .post("/boards")
+                .then().log().all()
+                .statusCode(200)
+                .extract()
+                .as(BoardResponse.class);
 
+        PostResponse 게시글 = RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .body(new PostRequest("안녕하세요", "인사", 자유게시판.id()))
+                .when()
+                .post("/posts")
+                .then().log().all()
+                .statusCode(200)
+                .extract()
+                .as(PostResponse.class);
+
+        RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .body(new CommentRequest(
+                        "댓글내용이 300자를 넘어가면 에러나게 된다.                                                      댓글내용이 300자를 넘어가면 에러나게 된다.                                                      댓글내용이 300자를 넘어가면 에러나게 된다.                                                      댓글내용이 300자를 넘어가면 에러나게 된다.                                                      ",
+                        "이름", 게시글.id()))
+                .when()
+                .post("/comments")
+                .then().log().all()
+                .statusCode(400);
+    }
+
+    @Test
+    void 댓글_예외처리_이름() {
+        BoardResponse 자유게시판 = RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .body(new BoardRequest("자유게시판"))
+                .when()
+                .post("/boards")
+                .then().log().all()
+                .statusCode(200)
+                .extract()
+                .as(BoardResponse.class);
+
+        PostResponse 게시글 = RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .body(new PostRequest("안녕하세요", "인사", 자유게시판.id()))
+                .when()
+                .post("/posts")
+                .then().log().all()
+                .statusCode(200)
+                .extract()
+                .as(PostResponse.class);
+
+
+        RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .body(new CommentRequest(
+                        "댓글내용이 300자를 넘어가면 에러나게 된다.",
+                        "이름은 10글자를 넘으면 에러나게 된다. 10글자를 넘으면 안된다. 댓글의 이름은 10글자를 넘어가면 안됩니다.",
+                        게시글.id()))
+                .when()
+                .post("/comments")
+                .then().log().all()
+                .statusCode(400);
+    }
 }
