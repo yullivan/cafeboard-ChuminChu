@@ -1,5 +1,6 @@
 package cafeboard.comment;
 
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public class CommentController {
     }
 
     @PostMapping("/comments")
-    public CommentResponse createComment(@RequestBody CommentRequest commentRequest){
+    public CommentResponse createComment(@Valid @RequestBody CommentRequest commentRequest){
         return commentService.create(commentRequest);
     }
 
