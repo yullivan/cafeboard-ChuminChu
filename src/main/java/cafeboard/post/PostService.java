@@ -28,7 +28,7 @@ public class PostService {
         return new PostResponse(post.getId(), post.getTitle(), post.getContent());
     }
 
-    public PostCommentDetailResponse findById(Long postId) {
+    public PostCommentDetailResponse findByPostId(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(()->
                 new NoSuchElementException("찾는 글이 없습니다." + postId));
 
@@ -43,7 +43,7 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponse updatePost(Long postId, PostRequest postRequest) {
+    public PostResponse update(Long postId, PostRequest postRequest) {
         Post post = postRepository.findById(postId).orElseThrow(() ->
                 new NoSuchElementException("찾는 글이 없습니다." + postId));
         post.setTitle(postRequest.title());
@@ -51,7 +51,7 @@ public class PostService {
         return new PostResponse(postId, post.getTitle(), post.getContent());
     }
 
-    public void deletePost(Long postId) {
+    public void deleteById(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(()->
                 new NoSuchElementException("찾는 글이 없습니다." + postId));
         postRepository.delete(post);

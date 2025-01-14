@@ -15,17 +15,17 @@ public class CommentController {
     }
 
     @PostMapping("/comments")
-    public CommentResponse createComment(@Valid @RequestBody CommentRequest commentRequest){
-        return commentService.create(commentRequest);
+    public CommentResponse save(@Valid @RequestBody CommentRequest commentRequest){
+        return commentService.save(commentRequest);
     }
 
     @PutMapping("/comments/{commentId}")
-    public CommentResponse putComment(@PathVariable Long commentId, @RequestBody CommentRequest commentRequest){
-        return commentService.put(commentId,commentRequest);
+    public CommentResponse update(@PathVariable Long commentId, @RequestBody CommentRequest commentRequest){
+        return commentService.update(commentId,commentRequest);
     }
 
     @DeleteMapping("/comments/{commentId}")
-    public CommentResponse deleteComment(@PathVariable Long commentId){
-        return commentService.delete(commentId);
+    public CommentResponse deleteById(@PathVariable Long commentId){
+        return commentService.deleteById(commentId);
     }
 }

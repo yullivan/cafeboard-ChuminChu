@@ -37,7 +37,7 @@ public class BoardService {
         return new BoardResponse(board.getBoardName(), board.getId());
     }
 
-    public void delete(Long boardId) {
+    public void deleteById(Long boardId) {
         Board board = boardRepository.findById(boardId).orElseThrow(() ->
                 new NoSuchElementException("존재하지 않은 게시판입니다." + boardId));
         boardRepository.delete(board);

@@ -15,23 +15,23 @@ public class BoardController {
     }
 
     @PostMapping("/boards")
-    public BoardResponse createBoard(@Valid @RequestBody BoardRequest boardRequest) {
+    public BoardResponse save(@Valid @RequestBody BoardRequest boardRequest) {
         return boardService.save(boardRequest);
     }
 
     @GetMapping("/boards")
-    public List<BoardResponse> getBoard() {
+    public List<BoardResponse> findAll() {
         return boardService.findAll();
     }
 
     @PutMapping("/boards/{boardId}")
-    public BoardResponse putBoard(@PathVariable Long boardId, @Valid @RequestBody BoardRequest boardRequest){
+    public BoardResponse update(@PathVariable Long boardId, @Valid @RequestBody BoardRequest boardRequest){
         return boardService.update(boardId, boardRequest);
     }
 
     @DeleteMapping("/boards/{boardId}")
-    public void deleteBoard(@PathVariable Long boardId){
-        boardService.delete(boardId);
+    public void deleteById(@PathVariable Long boardId){
+        boardService.deleteById(boardId);
     }
 
 }

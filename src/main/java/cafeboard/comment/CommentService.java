@@ -18,7 +18,7 @@ public class CommentService {
         this.postRepository = postRepository;
     }
 
-    public CommentResponse create(CommentRequest commentRequest) {
+    public CommentResponse save(CommentRequest commentRequest) {
         Post postId = postRepository.findById(commentRequest.postId())
                 .orElseThrow(() -> new NoSuchElementException("해당 게시글은 존재하지 않습니다."));
         Comment comment = commentRepository.save(new Comment(
@@ -31,14 +31,14 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponse put(Long commentId, CommentRequest commentRequest) {
+    public CommentResponse update(Long commentId, CommentRequest commentRequest) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() ->
                 new NoSuchElementException("찾는 댓글이 없습니다."));
         comment.setContent(commentRequest.content());
         return new CommentResponse(comment.getContent(), comment.getName(), commentId);
     }
 
-    public CommentResponse delete(Long commentId) {
+    public CommentResponse deleteById(Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() ->
                 new NoSuchElementException("찾는 댓글이 없습니다."));
         commentRepository.delete(comment);

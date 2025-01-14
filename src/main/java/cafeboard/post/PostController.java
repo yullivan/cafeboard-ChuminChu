@@ -15,27 +15,27 @@ public class PostController {
     }
 
     @PostMapping("/posts")
-    public PostResponse createPost(@Valid @RequestBody PostRequest postRequest){
+    public PostResponse save(@Valid @RequestBody PostRequest postRequest){
         return postService.save(postRequest);
     }
 
     @GetMapping("/posts")
-    public List<PostCommentResponse> getPosts(@RequestParam(required = false) Long boardId){
+    public List<PostCommentResponse> findByBoardId(@RequestParam(required = false) Long boardId){
         return postService.findByBoardId(boardId);
     }
 
     @GetMapping("/posts/{postId}")
-    public PostCommentDetailResponse getPost(@PathVariable Long postId){
-        return postService.findById(postId);
+    public PostCommentDetailResponse findByPostId(@PathVariable Long postId){
+        return postService.findByPostId(postId);
     }
 
     @PutMapping("/posts/{postId}")
     public PostResponse putPost(@PathVariable Long postId, @Valid @RequestBody PostRequest postRequest){
-        return postService.updatePost(postId,postRequest);
+        return postService.update(postId,postRequest);
     }
 
     @DeleteMapping("/posts/{postId}")
-    public void deletePost(@PathVariable Long postId){
-        postService.deletePost(postId);
+    public void deleteById(@PathVariable Long postId){
+        postService.deleteById(postId);
     }
 }
