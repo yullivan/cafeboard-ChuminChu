@@ -79,14 +79,7 @@ public class PostTest extends AcceptanceTest {
                 .extract()
                 .as(PostResponse.class);
 
-        RestAssured
-                .given().log().all()
-                .contentType(ContentType.JSON)
-                .queryParam("boardId", 자유게시판.id())
-                .when()
-                .get("/posts")
-                .then().log().all()
-                .statusCode(200);
+        assertThat(게시글).isNotNull();
     }
 
     @Test
@@ -102,7 +95,7 @@ public class PostTest extends AcceptanceTest {
                 .statusCode(200)
                 .extract().as(BoardResponse.class);
 
-        PostResponse postResponse = RestAssured
+        PostResponse 게시글 = RestAssured
                 .given().log().all()
                 .contentType(ContentType.JSON)
                 .body(new PostRequest("안녕하세요", "인사", 자유게시판.id()))
@@ -113,13 +106,29 @@ public class PostTest extends AcceptanceTest {
                 .extract()
                 .as(PostResponse.class);
 
-        RestAssured
+        CommentResponse 댓글1 = RestAssured
                 .given().log().all()
-                .pathParam("postId", postResponse.id())
+                .contentType(ContentType.JSON)
+                .body(new CommentRequest("댓글내용", "이름", 게시글.id()))
+                .when()
+                .post("/comments")
+                .then().log().all()
+                .statusCode(200)
+                .extract()
+                .as(CommentResponse.class);
+
+        PostCommentDetailResponse 특정게시글조회 = RestAssured
+                .given().log().all()
+                .pathParam("postId", 게시글.id())
                 .when()
                 .get("/posts/{postId}")
                 .then().log().all()
-                .statusCode(200);
+                .statusCode(200)
+                .extract()
+                .as(PostCommentDetailResponse.class);
+
+        assertThat(특정게시글조회).isNotNull();
+
     }
 
     @Test
@@ -135,10 +144,10 @@ public class PostTest extends AcceptanceTest {
                 .extract()
                 .as(BoardResponse.class);
 
-        PostResponse postResponse = RestAssured
+        PostResponse 수정전게시글 = RestAssured
                 .given().log().all()
                 .contentType(ContentType.JSON)
-                .body(new PostRequest("안녕하세요", "인사", 자유게시판.id()))
+                .body(new PostRequest("인사", "안녕하세요", 자유게시판.id()))
                 .when()
                 .post("/posts")
                 .then().log().all()
@@ -146,15 +155,31 @@ public class PostTest extends AcceptanceTest {
                 .extract()
                 .as(PostResponse.class);
 
-        RestAssured
+        PostResponse 수정후게시글 = RestAssured
                 .given().log().all()
                 .contentType(ContentType.JSON)
-                .body(new PostRequest("아효 힘들어", "제목이다", postResponse.id()))
-                .pathParam("postId", postResponse.id())
+                .body(new PostRequest("제목이다", "본문이다.", 수정전게시글.id()))
+                .pathParam("postId", 수정전게시글.id())
                 .when()
                 .put("/posts/{postId}")
                 .then().log().all()
-                .statusCode(200);
+                .statusCode(200)
+                .extract()
+                .as(PostResponse.class);
+
+        List<PostResponse> 게시글 = RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .when()
+                .get("/posts")
+                .then().log().all()
+                .statusCode(200)
+                .extract()
+                .jsonPath()
+                .getList("." , PostResponse.class);
+
+        assertThat(게시글).allMatch(post -> !post.title().equals(수정전게시글.title()));
+        assertThat(게시글).allMatch(post -> post.title().equals(수정후게시글.title()));
 
     }
 
@@ -170,7 +195,18 @@ public class PostTest extends AcceptanceTest {
                 .statusCode(200)
                 .extract().as(BoardResponse.class);
 
-        PostResponse postResponse = RestAssured
+        PostResponse 게시글1 = RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .body(new PostRequest("안녕하세요", "인사", 자유게시판.id()))
+                .when()
+                .post("/posts")
+                .then().log().all()
+                .statusCode(200)
+                .extract()
+                .as(PostResponse.class);
+
+        PostResponse 삭제전게시글 = RestAssured
                 .given().log().all()
                 .contentType(ContentType.JSON)
                 .body(new PostRequest("안녕하세요", "인사", 자유게시판.id()))
@@ -184,11 +220,24 @@ public class PostTest extends AcceptanceTest {
         RestAssured
                 .given().log().all()
                 .contentType(ContentType.JSON)
-                .pathParam("postId", postResponse.id())
+                .pathParam("postId", 삭제전게시글.id())
                 .when()
                 .delete("/posts/{postId}")
                 .then().log().all()
                 .statusCode(200);
+
+        List<PostResponse> posts = RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .when()
+                .get("/posts")
+                .then().log().all()
+                .statusCode(200)
+                .extract()
+                .jsonPath()
+                .getList(".", PostResponse.class);
+
+        assertThat(posts).allMatch(post -> !post.id().equals(삭제전게시글));
     }
 
     @Test
@@ -249,7 +298,7 @@ public class PostTest extends AcceptanceTest {
                 .jsonPath()
                 .getList(".", PostCommentResponse.class);
 
-        assertThat(댓글개수포함조회.get(0).viewCount()).isEqualTo(2);
+        assertThat(댓글개수포함조회.get(0).commentCount()).isEqualTo(2);
     }
 
     @Test

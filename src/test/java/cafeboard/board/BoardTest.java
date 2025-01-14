@@ -10,6 +10,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -86,6 +87,8 @@ public class BoardTest extends AcceptanceTest {
                 .extract()
                 .as(BoardResponse.class);
 
+        assertThat(자유게시판).isNotNull();
+
         List<BoardResponse> 게시판리스트 = RestAssured
                 .given().log().all()
                 .when()
@@ -140,6 +143,16 @@ public class BoardTest extends AcceptanceTest {
 
     @Test
     void 게시판삭제테스트() {
+        BoardResponse 게시판 = RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .body(new BoardRequest("공지사항"))
+                .when()
+                .post("/boards")
+                .then().log().all()
+                .statusCode(200)
+                .extract().as(BoardResponse.class);
+
         BoardResponse 삭제전게시판 = RestAssured
                 .given().log().all()
                 .contentType(ContentType.JSON)
@@ -158,6 +171,18 @@ public class BoardTest extends AcceptanceTest {
                 .delete("/boards/{boardId}")
                 .then().log().all()
                 .statusCode(200);
+
+        List<BoardResponse> 게시판리스트 = RestAssured
+                .given().log().all()
+                .when()
+                .get("/boards")
+                .then().log().all()
+                .statusCode(200)
+                .extract()
+                .jsonPath()
+                .getList(".", BoardResponse.class);
+
+        assertThat(게시판리스트).allMatch(board -> board.boardName().equals(게시판.boardName()));
 
     }
 }
