@@ -32,15 +32,15 @@ public class CommentService {
 
     @Transactional
     public CommentResponse update(Long commentId, CommentRequest commentRequest) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() ->
-                new NoSuchElementException("찾는 댓글이 없습니다."));
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new NoSuchElementException("찾는 댓글이 없습니다."));
         comment.setContent(commentRequest.content());
         return new CommentResponse(comment.getContent(), comment.getName(), commentId);
     }
 
     public CommentResponse deleteById(Long commentId) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() ->
-                new NoSuchElementException("찾는 댓글이 없습니다."));
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new NoSuchElementException("찾는 댓글이 없습니다."));
         commentRepository.delete(comment);
         return new CommentResponse(comment.getContent(), comment.getName(), commentId);
     }
