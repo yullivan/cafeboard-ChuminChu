@@ -1,6 +1,10 @@
 package cafeboard.board;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import java.time.LocalDateTime;
 
 @Entity
 public class Board {
@@ -11,6 +15,12 @@ public class Board {
 
     @Column(unique = true, nullable = false)
     private String boardName;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updateAt;
 
     public Board(String boardName) {
         this.boardName = boardName;

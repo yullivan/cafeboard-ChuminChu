@@ -3,7 +3,10 @@ package cafeboard.post;
 import cafeboard.board.Board;
 import cafeboard.comment.Comment;
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +22,11 @@ public class Post {
     @Column(nullable = false)
     private String title;
 
+    @CreatedDate
+    private LocalDateTime createdAt;
 
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(nullable = false)

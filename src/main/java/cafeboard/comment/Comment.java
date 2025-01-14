@@ -2,6 +2,8 @@ package cafeboard.comment;
 
 import cafeboard.post.Post;
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.util.Locale;
@@ -22,9 +24,11 @@ public class Comment {
     @ManyToOne
     private Post post;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @CreatedDate
+    private LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
     public Comment() {
     }
