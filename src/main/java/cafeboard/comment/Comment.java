@@ -21,7 +21,7 @@ public class Comment extends BaseEntity {
     @JoinColumn(nullable = false)
     private Post post;
 
-    public Comment() {
+    protected Comment() {
     }
 
     public Comment(String content, String name, Post post) {

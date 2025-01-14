@@ -21,7 +21,7 @@ public class Board extends BaseEntity {
         this.boardName = boardName;
     }
 
-    public Board() {
+    protected Board() {
     }
 
     public Long getId() {

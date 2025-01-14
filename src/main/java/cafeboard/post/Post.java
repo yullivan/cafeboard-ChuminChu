@@ -32,7 +32,7 @@ public class Post extends BaseEntity {
 
     private int viewCount;
 
-    public Post() {
+    protected Post() {
     }
 
     public Post(String title, String content, Board board) {
