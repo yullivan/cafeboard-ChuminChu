@@ -21,7 +21,7 @@ public class PostController {
 
     @GetMapping("/posts")
     public List<PostCommentResponse> findByBoardId(@RequestParam(required = false) Long boardId){
-        return postService.findByBoardId(boardId);
+        return postService.findAllByBoardId(boardId);
     }
 
     @GetMapping("/posts/{postId}")

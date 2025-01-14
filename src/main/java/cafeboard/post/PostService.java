@@ -57,7 +57,7 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    public List<PostCommentResponse> findByBoardId(Long boardId) {
+    public List<PostCommentResponse> findAllByBoardId(Long boardId) {
         return postRepository.findByBoardId(boardId)
                .stream()
                .map( post-> new PostCommentResponse(
