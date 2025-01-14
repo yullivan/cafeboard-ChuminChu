@@ -1,5 +1,6 @@
 package cafeboard.comment;
 
+import cafeboard.BaseEntity;
 import cafeboard.post.Post;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.Locale;
 
 @Entity
-public class Comment {
+public class Comment extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,12 +24,6 @@ public class Comment {
 
     @ManyToOne
     private Post post;
-
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
 
     public Comment() {
     }
@@ -53,14 +48,6 @@ public class Comment {
 
     public Post getPost() {
         return post;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
     }
 
     public void setContent(String content) {

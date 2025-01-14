@@ -1,5 +1,6 @@
 package cafeboard.post;
 
+import cafeboard.BaseEntity;
 import cafeboard.board.Board;
 import cafeboard.comment.Comment;
 import jakarta.persistence.*;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Post {
+public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,12 +22,6 @@ public class Post {
     private String content;
     @Column(nullable = false)
     private String title;
-
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(nullable = false)

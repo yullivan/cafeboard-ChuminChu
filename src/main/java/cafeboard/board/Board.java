@@ -1,5 +1,6 @@
 package cafeboard.board;
 
+import cafeboard.BaseEntity;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -7,7 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDateTime;
 
 @Entity
-public class Board {
+public class Board extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,12 +16,6 @@ public class Board {
 
     @Column(unique = true, nullable = false)
     private String boardName;
-
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime updateAt;
 
     public Board(String boardName) {
         this.boardName = boardName;
