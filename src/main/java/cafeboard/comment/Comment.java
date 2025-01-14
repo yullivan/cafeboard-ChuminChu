@@ -23,6 +23,7 @@ public class Comment extends BaseEntity {
     private String name;
 
     @ManyToOne
+    @JoinColumn(nullable = false)
     private Post post;
 
     public Comment() {
