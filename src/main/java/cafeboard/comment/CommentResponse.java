@@ -6,6 +6,6 @@ public record CommentResponse(
         Long id
 ) {
     public CommentResponse(Comment comment) {
-        this(comment.getContent(), comment.getName(), comment.getId());
+        this(comment.getContent(), comment.getWriter(), comment.getId());
     }
 }

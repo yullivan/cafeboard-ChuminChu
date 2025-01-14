@@ -3,11 +3,6 @@ package cafeboard.comment;
 import cafeboard.BaseEntity;
 import cafeboard.post.Post;
 import jakarta.persistence.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import java.time.LocalDateTime;
-import java.util.Locale;
 
 @Entity
 public class Comment extends BaseEntity {
@@ -20,7 +15,7 @@ public class Comment extends BaseEntity {
     private String content;
 
     @Column(nullable = false)
-    private String name;
+    private String writer;
 
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -31,7 +26,7 @@ public class Comment extends BaseEntity {
 
     public Comment(String content, String name, Post post) {
         this.content = content;
-        this.name = name;
+        this.writer = name;
         this.post = post;
     }
 
@@ -43,8 +38,8 @@ public class Comment extends BaseEntity {
         return content;
     }
 
-    public String getName() {
-        return name;
+    public String getWriter() {
+        return writer;
     }
 
     public Post getPost() {

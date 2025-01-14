@@ -26,7 +26,7 @@ public class CommentService {
                 commentRequest.name(),
                 postId));
 
-        return new CommentResponse(comment.getContent(), comment.getName(), comment.getId());
+        return new CommentResponse(comment.getContent(), comment.getWriter(), comment.getId());
 
     }
 
@@ -35,13 +35,13 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new NoSuchElementException("찾는 댓글이 없습니다."));
         comment.setContent(commentRequest.content());
-        return new CommentResponse(comment.getContent(), comment.getName(), commentId);
+        return new CommentResponse(comment.getContent(), comment.getWriter(), commentId);
     }
 
     public CommentResponse deleteById(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new NoSuchElementException("찾는 댓글이 없습니다."));
         commentRepository.delete(comment);
-        return new CommentResponse(comment.getContent(), comment.getName(), commentId);
+        return new CommentResponse(comment.getContent(), comment.getWriter(), commentId);
     }
 }
