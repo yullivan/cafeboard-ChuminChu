@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -84,7 +86,7 @@ public class BoardTest extends AcceptanceTest {
                 .extract()
                 .as(BoardResponse.class);
 
-        RestAssured
+        List<BoardResponse> 게시판리스트 = RestAssured
                 .given().log().all()
                 .when()
                 .get("/boards")
@@ -93,11 +95,13 @@ public class BoardTest extends AcceptanceTest {
                 .extract()
                 .jsonPath()
                 .getList(".", BoardResponse.class);
+
+        assertThat(게시판리스트).hasSize(1);
     }
 
     @Test
     void 게시판수정테스트() {
-        BoardResponse 게시판 = RestAssured
+        BoardResponse 수정전게시판 = RestAssured
                 .given().log().all()
                 .contentType(ContentType.JSON)
                 .body(new BoardRequest("지유게시판"))
@@ -108,20 +112,35 @@ public class BoardTest extends AcceptanceTest {
                 .extract()
                 .as(BoardResponse.class);
 
-        RestAssured
+        BoardResponse 수정후게시판 = RestAssured
                 .given().log().all()
                 .contentType(ContentType.JSON)
                 .body(new BoardRequest("자유게시판"))
-                .pathParam("boardId", 게시판.id())
+                .pathParam("boardId", 수정전게시판.id())
                 .when()
                 .put("/boards/{boardId}")
                 .then().log().all()
-                .statusCode(200);
+                .statusCode(200)
+                .extract()
+                .as(BoardResponse.class);
+
+        List<BoardResponse> 게시판리스트 = RestAssured
+                .given().log().all()
+                .when()
+                .get("/boards")
+                .then().log().all()
+                .statusCode(200)
+                .extract()
+                .jsonPath()
+                .getList(".", BoardResponse.class);
+
+        assertThat(게시판리스트).allMatch(board -> !board.boardName().equals(수정전게시판.boardName()));
+        assertThat(게시판리스트).anyMatch(board -> board.boardName().equals(수정후게시판.boardName()));
     }
 
     @Test
     void 게시판삭제테스트() {
-        BoardResponse 공지사항 = RestAssured
+        BoardResponse 삭제전게시판 = RestAssured
                 .given().log().all()
                 .contentType(ContentType.JSON)
                 .body(new BoardRequest("자유게시판"))
@@ -134,10 +153,11 @@ public class BoardTest extends AcceptanceTest {
         RestAssured
                 .given().log().all()
                 .contentType(ContentType.JSON)
-                .pathParam("boardId", 공지사항.id())
+                .pathParam("boardId", 삭제전게시판.id())
                 .when()
                 .delete("/boards/{boardId}")
                 .then().log().all()
                 .statusCode(200);
+
     }
 }

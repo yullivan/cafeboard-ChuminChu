@@ -14,6 +14,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CommentTest extends AcceptanceTest {
 
@@ -38,8 +39,6 @@ public class CommentTest extends AcceptanceTest {
                 .statusCode(200)
                 .extract()
                 .as(BoardResponse.class);
-
-        assertThat(자유게시판.boardName()).isNotNull();
 
         //게시글도 하나 있어야 하고
         PostResponse 게시글 = RestAssured
@@ -83,8 +82,6 @@ public class CommentTest extends AcceptanceTest {
                     .extract()
                     .as(BoardResponse.class);
 
-            assertThat(자유게시판.boardName()).isNotNull();
-
             PostResponse 게시글 = RestAssured
                     .given().log().all()
                     .contentType(ContentType.JSON)
@@ -97,7 +94,7 @@ public class CommentTest extends AcceptanceTest {
                     .as(PostResponse.class);
 
 
-            CommentResponse 댓글 = RestAssured
+            CommentResponse 수정전댓글 = RestAssured
                     .given().log().all()
                     .contentType(ContentType.JSON)
                     .body(new CommentRequest("댓글내용", "이름", 게시글.id()))
@@ -108,18 +105,19 @@ public class CommentTest extends AcceptanceTest {
                     .extract()
                     .as(CommentResponse.class);
 
-            RestAssured
+            CommentResponse 수정후댓글 = RestAssured
                     .given().log().all()
                     .contentType(ContentType.JSON)
                     .body(new CommentRequest("수정된 댓글내용", "이름", 게시글.id()))
-                    .pathParam("commentId", 댓글.id())
+                    .pathParam("commentId", 수정전댓글.id())
                     .when()
                     .put("/comments/{commentId}")
                     .then().log().all()
                     .statusCode(200)
                     .extract()
                     .as(CommentResponse.class);
-    }
+
+        }
 
     @Test
     void 댓글삭제테스트() {
@@ -135,6 +133,7 @@ public class CommentTest extends AcceptanceTest {
                 .as(BoardResponse.class);
 
         assertThat(자유게시판.boardName()).isNotNull();
+
 
         PostResponse 게시글 = RestAssured
                 .given().log().all()
