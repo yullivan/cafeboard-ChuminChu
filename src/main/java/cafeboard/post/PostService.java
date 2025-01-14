@@ -31,7 +31,7 @@ public class PostService {
     public PostCommentDetailResponse findByPostId(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(()-> new NoSuchElementException("찾는 글이 없습니다." + postId));
-
+        post.countView();
         return new PostCommentDetailResponse(
                 postId,
                 post.getTitle(),
@@ -39,7 +39,8 @@ public class PostService {
                 post.getComments()
                         .stream()
                         .map(comment -> new CommentResponse(comment))
-                        .toList());
+                        .toList(),
+                post.getViewCount());
     }
 
     @Transactional

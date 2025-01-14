@@ -4,6 +4,6 @@ public record PostCommentResponse(
         Long id,
         String title,
         String content,
-        int viewCount
+        int commentCount
 ) {
 }

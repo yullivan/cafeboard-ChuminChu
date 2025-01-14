@@ -9,6 +9,7 @@ public record PostCommentDetailResponse(
         Long id,
         String title,
         String content,
-        List<CommentResponse> comments
+        List<CommentResponse> comments,
+        int viewCount
 ) {
 }
